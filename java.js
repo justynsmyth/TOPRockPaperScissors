@@ -50,6 +50,8 @@ function updateScores(result) {
   if (result === "You Win!") {
     let curr = +pScore.textContent;
     pScore.textContent = ++curr;
+  } else if (result === "Tie!") {
+    return;
   } else {
     let curr = +score.textContent;
     score.textContent = ++curr;
