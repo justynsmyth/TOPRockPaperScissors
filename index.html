@@ -11,9 +11,18 @@
     <h1 id="title">ROCK PAPER SCISSORS</h1>
     <div class="initial">
       <button onclick="game()">Click to play</button>
-      :<button id="reset" onclick="resetButton()">Reset?</button>
+      <button id="reset" onclick="resetButton()">Reset?</button>
+    </div>
+    <div class="container">
+      <button class="btn">Rock</button>
+      <button class="btn">Paper</button>
+      <button class="btn">Scissors</button>
     </div>
     <div id="textContainer"></div>
+    <div id="score">
+      <p>CPU: <span id="cpuScore">0</span></p>
+      <p>YOU: <span id="pScore">0</span></p>
+    </div>
     <script src="java.js"></script>
   </body>
 </html>

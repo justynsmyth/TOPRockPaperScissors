@@ -18,33 +18,9 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
+// settings for container
 let container = document.getElementById("textContainer");
-
-function game() {
-  let cpuScore = 0;
-  let playerScore = 0;
-
-  for (let i = 0; i < 5; i++) {
-    let temp = prompt("Make a Choice");
-    const playerSelection =
-      temp.charAt(0).toUpperCase() + temp.slice(1).toLowerCase();
-    const computerSelection = getComputerChoice();
-    console.log(computerSelection);
-    console.log(playerSelection);
-
-    let result = playRound(playerSelection, computerSelection);
-
-    if (result === "You Win!") {
-      playerScore++;
-    } else {
-      cpuScore++;
-    }
-    let paragraph = document.createElement("p");
-    paragraph.textContent = result;
-    container.appendChild(paragraph);
-  }
-  document.getElementById("reset").style.display = "inline-block";
-}
+container.setAttribute("style", "text-align:center;");
 
 function resetButton() {
   if (container !== null) {
@@ -53,5 +29,78 @@ function resetButton() {
       container.removeChild(container.firstChild);
     }
   }
+  const newElement = document.getElementById("newElt");
+  if (newElement) {
+    newElement.parentNode.removeChild(newElement);
+  }
+  document.getElementById("cpuScore").textContent = 0;
+  document.getElementById("pScore").textContent = 0;
+
   document.getElementById("reset").style.display = "none";
+  document.getElementById("score").style.display = "none";
+  enableButtons();
 }
+
+let results = document.createElement("p");
+
+function updateScores(result) {
+  const score = document.getElementById("cpuScore");
+  const pScore = document.getElementById("pScore");
+
+  if (result === "You Win!") {
+    let curr = +pScore.textContent;
+    pScore.textContent = ++curr;
+  } else {
+    let curr = +score.textContent;
+    score.textContent = ++curr;
+  }
+}
+
+function checkEnd() {
+  const score = document.getElementById("cpuScore");
+  const pScore = document.getElementById("pScore");
+  let end = document.getElementById("score");
+
+  if (score.textContent == 5) {
+    const winner = document.createElement("p");
+    winner.id = "newElt";
+    winner.textContent = "CPU WINS";
+    end.appendChild(winner);
+    disableButtons();
+  } else if (pScore.textContent == 5) {
+    const winner = document.createElement("p");
+    winner.id = "newElt";
+    winner.textContent = "YOU WIN";
+    end.appendChild(winner);
+    disableButtons();
+  }
+}
+
+function disableButtons() {
+  const buttons = document.querySelectorAll(".btn");
+  buttons.forEach((button) => {
+    button.disabled = true;
+  });
+}
+
+function enableButtons() {
+  const buttons = document.querySelectorAll(".btn");
+  buttons.forEach((button) => {
+    button.disabled = false;
+  });
+}
+
+const select = document.querySelectorAll(".btn");
+select.forEach((button) => {
+  button.addEventListener("click", () => {
+    document.getElementById("score").setAttribute("style", "flex-direction:column; display:flex;" );
+    let result = playRound(button.textContent, getComputerChoice());
+
+    updateScores(result);
+    checkEnd();
+    // update content of result
+    results.textContent = result;
+    container.appendChild(results);
+    document.getElementById("reset").style.display = "inline-block";
+  });
+});
